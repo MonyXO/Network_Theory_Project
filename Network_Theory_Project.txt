@@ -1,0 +1,65 @@
+Network_Theory_Project
+
+Need to develop 2 programs:
+- A client
+- A server
+
+The client reads a text file, then ecrypts it
+into a cypher text file using an encryption alg. 
+The client will then send it to the server.
+
+The server will receive the cypher and save it.
+The server will decrypt the the cypher text.
+
+Encryption and decryption MUST be symmetric, and
+developed by the student. They can't be very
+simple.
+
+I can create the text file.
+-- filename: message.txt 
+
+ASCII code of characters in plain text must be
+in range 32 to 122.
+This range contains:
+-- all lowercase
+-- all uppercase
+-- numbers 0 - 9
+-- space - /
+-- : - @
+-- [ - `
+
+Need a one page report. 
+
+------------------------------------------------
+First lets create the message. Done.
+That will be the trial text for the duration 
+until we get a clean result.
+
+------------------------------------------------
+Lets develop the server and client programs.
+Example code was provided so we'll use that as 
+our basis. Lets try the server first.
+
+I will have to get an understanding of socket
+programming in java first. Done.
+
+Lets begin with file
+-- filename: Server.java
+
+The server file is written and runs correctly.
+
+Lets do the client next.
+-- filename: Client.java
+
+The client file is written and runs correctly.
+There is clear communication between both programs.
+
+--------------------------------------------------
+Now we'll need to modify both programs to accept a 
+text file.
+
+Lets modify the client to accept and send a text file.
+First we need to read a plain text file to terminal.
+Done.
+
+There is an exception error but we'll fix that later.
