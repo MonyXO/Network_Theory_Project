@@ -154,7 +154,7 @@ public class Client
             System.out.println("Connected");
             
             // open input file 
-            inputFile = new FileInputStream("message.txt");
+            inputFile = new FileInputStream("README.txt");
             br = new BufferedReader(new InputStreamReader(inputFile));
 
             // sends output to the socket
@@ -174,7 +174,8 @@ public class Client
         File file = new File("Encrypted_Text.txt");
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        // keep reading until "Over" is input
+        System.out.println("Encrypting file: \n");
+
         for (String line=br.readLine(); line!=null; line=br.readLine()) 
         {
             //System.out.println(line);
@@ -188,7 +189,7 @@ public class Client
         }
 
         bw.close();
-        System.out.println("file closed");
+        System.out.println("\nFile closed");
         
         // close the connection
         try

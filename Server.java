@@ -151,6 +151,7 @@ public class Server
             System.out.println("Waiting for a client ...");
             socket = server.accept();
             System.out.println("Client accepted");
+            System.out.println("Decrypting file: \n");
             
             // takes input from the client socket
             InputStream ifs = socket.getInputStream();
@@ -172,7 +173,7 @@ public class Server
             }
             
             bw.close();
-            System.out.println("Closing connection");
+            System.out.println("\nClosing connection");
             // close connection;
             socket.close();
             in.close();
