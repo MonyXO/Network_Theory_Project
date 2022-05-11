@@ -1,5 +1,6 @@
 // A Java program for a Client
 import java.net.*;
+import java.util.Scanner;
 import java.io.*;
 
 public class Client
@@ -152,9 +153,14 @@ public class Client
         {
             socket = new Socket(address, port);
             System.out.println("Connected");
-            
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Before we begin make sure your text file is in the same directory.");
+            System.out.println("Make sure the file has the word 'Over' to indicate the end of the file.");
+            System.out.println("Enter the name of the text file:");
+            String text_file = sc.nextLine();
+
             // open input file 
-            inputFile = new FileInputStream("README.txt");
+            inputFile = new FileInputStream(text_file);
             br = new BufferedReader(new InputStreamReader(inputFile));
 
             // sends output to the socket
@@ -189,7 +195,7 @@ public class Client
         }
 
         bw.close();
-        System.out.println("\nFile closed");
+        System.out.println("\nFile saved and closed.");
         
         // close the connection
         try

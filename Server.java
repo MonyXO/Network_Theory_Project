@@ -173,6 +173,7 @@ public class Server
             }
             
             bw.close();
+            System.out.println("File saved and closed.");
             System.out.println("\nClosing connection");
             // close connection;
             socket.close();
