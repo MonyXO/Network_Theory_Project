@@ -100,40 +100,44 @@ public class Client
         for(int i = 0; i < str.length(); i++) {
             // get ascii value of character
             int ascii = (int) str.charAt(i);
+
             // convert to binary string
             binary = binaryInt(ascii);
+            
             // convert string to array
             arr = strToArray(binary);
+            
             // rotate bits left
             char[] binaryArr = leftRotate(arr, 3);
             String result = toString(binaryArr);
+            
             //flip bits
             char[] flippedBinary = flipBits(binaryArr);
             String flipped = toString(flippedBinary);
-            // swap bits
+            
+            // swap bits 3 and 6
             char[] swap = swap3_6(flipped);
             String swapped = toString(swap);
-            // convert to ascii to add
-            int asciiConvert = Integer.parseInt(swapped, 2);
-            // check range of 32-122
-            int asciiSub = asciiConvert - 50;
-            if(asciiSub > 122) {
-                asciiSub = asciiSub - 90;
-            } else if (asciiSub < 32) {
-                asciiSub = asciiSub + 33;
-            }
-            // convert back binary
-            String binaryF = binaryInt(asciiSub);
+            
             // swap bits 4 and 5
-            char[] swappedF = swap4_5(binaryF);
+            char[] swappedF = swap4_5(swapped);
+            
             // binary string
             String finalString = toString(swappedF);
+            
             // convert to encrypted ascii
-            int finalAscii = Integer.parseInt(finalString, 2);
+            ascii = Integer.parseInt(finalString, 2);
+
+            // add 25 to ascii
+            int finalAscii = ascii + 25;
+            if(finalAscii > 255) {
+                finalAscii = finalAscii - 256;
+            }
             char finalChar = (char) finalAscii;
+            
             // add it to a string
             sb.append(finalChar);
-            System.out.println(binary + " = " + str.charAt(i) + " = " + result + " = " + Integer.parseInt(result, 2) + " = " + flipped + " = " + Integer.parseInt(flipped, 2) + " = " + swapped + " = " + asciiConvert + " = " + asciiSub + " = " + binaryF + " = " + finalString + " = " + Integer.parseInt(finalString, 2));
+            //System.out.println(binary + " = " + str.charAt(i) + " = " + result + " = " + Integer.parseInt(result, 2) + " = " + flipped + " = " + Integer.parseInt(flipped, 2) + " = " + swapped + " = " + asciiConvert + " = " + asciiSub + " = " + binaryF + " = " + finalString + " = " + Integer.parseInt(finalString, 2));
         }
         String encryption = sb.toString();
         return encryption;
@@ -166,14 +170,25 @@ public class Client
         }
         
         // string to read message from input
-        
+        // Create file to save encryption
+        File file = new File("Encrypted_Text.txt");
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
         // keep reading until "Over" is input
         for (String line=br.readLine(); line!=null; line=br.readLine()) 
         {
-            System.out.println(line);
+            //System.out.println(line);
             String encrypted = encryptText(line);
-            out.writeUTF(encrypted);
+            System.out.println(encrypted);
+            bw.write(encrypted);
+            bw.newLine();
+            if (encrypted != null) {
+                out.writeUTF(encrypted);
+            }
         }
+
+        bw.close();
+        System.out.println("file closed");
         
         // close the connection
         try

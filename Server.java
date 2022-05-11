@@ -101,42 +101,39 @@ public class Server
         for(int i = 0; i < str.length(); i++) {
             // get ascii value of character
             int ascii = (int) str.charAt(i);
+            
+            // subtract 25 from ascii
+            ascii = ascii - 25;
+            if(ascii < 0) {
+                ascii = ascii + 256;
+            }
+
             // convert to binary string
             binary = binaryInt(ascii);
+            
             // swap bits 4 and 5
             char[] swapped4_5 = swap4_5(binary);
-            // convert string to array
-            arr = strToArray(binary);
-            // rotate bits left
-            char[] binaryArr = leftRotate(arr, 3);
-            String result = toString(binaryArr);
-            //flip bits
-            char[] flippedBinary = flipBits(binaryArr);
-            String flipped = toString(flippedBinary);
-            // swap bits
-            char[] swap = swap3_6(flipped);
-            String swapped = toString(swap);
-            // convert to ascii to add
-            int asciiConvert = Integer.parseInt(swapped, 2);
-            // check range of 32-122
-            int asciiSub = asciiConvert - 50;
-            if(asciiSub > 122) {
-                asciiSub = asciiSub - 90;
-            } else if (asciiSub < 32) {
-                asciiSub = asciiSub + 33;
-            }
+            String swapped = toString(swapped4_5);
+
+            // swap bits 3 and 6
+            char[] swapped3_6 = swap3_6(swapped);
+
+            // flip bits
+            char[] flipped = flipBits(swapped3_6);
+
+            // rotate right 3
+            char[] rotated = rightRotate(flipped, 3);
+            
             // convert back binary
-            String binaryF = binaryInt(asciiSub);
-            // swap bits 4 and 5
-            char[] swappedF = swap4_5(binaryF);
-            // binary string
-            String finalString = toString(swappedF);
+            String binaryF = toString(rotated);
+            
             // convert to encrypted ascii
-            int finalAscii = Integer.parseInt(finalString, 2);
+            int finalAscii = Integer.parseInt(binaryF, 2);
             char finalChar = (char) finalAscii;
+            
             // add it to a string
             sb.append(finalChar);
-            System.out.println(binary + " = " + str.charAt(i) + " = " + result + " = " + Integer.parseInt(result, 2) + " = " + flipped + " = " + Integer.parseInt(flipped, 2) + " = " + swapped + " = " + asciiConvert + " = " + asciiSub + " = " + binaryF + " = " + finalString + " = " + Integer.parseInt(finalString, 2));
+            //System.out.println(binary + " = " + str.charAt(i) + " = " + result + " = " + Integer.parseInt(result, 2) + " = " + flipped + " = " + Integer.parseInt(flipped, 2) + " = " + swapped + " = " + asciiConvert + " = " + asciiSub + " = " + binaryF + " = " + finalString + " = " + Integer.parseInt(finalString, 2));
         }
         String encryption = sb.toString();
         return encryption;
@@ -156,19 +153,27 @@ public class Server
             System.out.println("Client accepted");
             
             // takes input from the client socket
-            in = new DataInputStream(
-            new BufferedInputStream(socket.getInputStream()));
+            InputStream ifs = socket.getInputStream();
+            in = new DataInputStream(ifs);
             String line = "";
-            
+            String decryption = "";
+            File file = new File("Decrypted_Text.txt");
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
             // reads message from client until "Over" is sent
-            while (line != null)
+            while (!decryption.equals("Over"))
             {
+                //System.out.println(line);
                 line = in.readUTF();
-                String decryption = decryptText(line);
+                decryption = decryptText(line);
+                bw.write(decryption);
+                bw.newLine();
                 System.out.println(decryption);
             }
+            
+            bw.close();
             System.out.println("Closing connection");
-            // close connection
+            // close connection;
             socket.close();
             in.close();
         }
